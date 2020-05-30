@@ -18,14 +18,14 @@ const replaceTemplate = (temp, product) => {
   output = output.replace(/{%quantity%}/g, product.quantity);
   output = output.replace(/{%price%}/g, product.price);
   output = output.replace(/{%description%}/g, product.description);
-  if (!product.organic) output = output.replace(/{%is-organic%}/g, 'not-organic');
+  if (!product.organic) output = output.replace(/{%not-organic%}/g, 'not-organic');
   return output;
 };
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataObj = JSON.parse(data);
 
-const slugs = dataObj.map((el) => slugify(el.productName, { lower: false }));
+const slugs = dataObj.map((el) => slugify(el.productName, { lower: true }));
 console.log(slugs);
 
 const server = http.createServer((req, res) => {
@@ -34,7 +34,6 @@ const server = http.createServer((req, res) => {
   // from which we extracted pathname and query
   const { pathname, query } = url.parse(pathName, true);
   // OVERVIEW
-
   if (pathname === '/' || pathname === '/overview') {
     res.writeHead(200, { 'content-type': 'text/html' });
     // replace the placeholders in the tempCard with the current product.
