@@ -37,6 +37,9 @@ const server = http.createServer((req, res) => {
       myOwnContent: 'this is it',
     });
     // http header is a piece of information about the response that we are sending back
+    console.log(res);
+    console.log('--------------------------------');
+    console.log(req);
     res.end(`<h1>page not found</h1>`);
   }
   res.end('here is a response from the server');
