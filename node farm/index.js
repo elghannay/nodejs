@@ -54,7 +54,7 @@ server.listen('8000', () => {
 const fs = require('fs');
 const http = require('http');
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
-// console.log(JSON.parse(data));
+console.log(JSON.parse(data));
 const server = http.createServer((req, res) => {
   // the url method will parse the link parameter into a nice object
   const pathName = req.url;
