@@ -29,6 +29,12 @@
 
 #### schema validation.
 
+> Validation rules are on a per-collection basis.
+
+> To specify validation rules when creating a new collection, use `db.createCollection()` with the validator option.
+
+> To add document validation to an existing collection, use `collMod` command with the validator option.
+
 > if you need to incorporate validation in your collections of data you should use 
 `db.createCollection("posts")`
 
@@ -36,6 +42,7 @@
 db.runCommand({
   collMod: 'posts',
   validator: {
+  //JSON Schema is the recommended means of performing schema validation.
     $jsonSchema: {
       bsonType: 'object',
       required: ['title', 'text', 'creator', 'comments'],
@@ -73,9 +80,14 @@ db.runCommand({
       }
     }
   },
-//   the logs will be stored in a log file.
-  validationAction: 'warn'
+/*   the logs will be stored in a log file, but allows the insertion or update to proceed. */
+  validationAction: 'warn',
+  validationLevel: "moderate"
 });
 
 
 ```
+
+* If the **validationLevel** is **strict** (the default), MongoDB applies validation rules to all inserts and updates.
+
+* If the **validationLevel** is **moderate**, MongoDB applies validation rules to inserts and to updates to existing documents that already fulfill the validation criteria. With the moderate level, updates to existing documents that do not fulfill the validation criteria are not checked for validity.
