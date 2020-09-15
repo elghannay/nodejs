@@ -1,6 +1,7 @@
 #### starting the server.
 
 > `mongod --dbpath "C:\data\db"` then run on a new powershell `mongo`
+> you can specifie a new port by using `--port 27017` for example.
 
 #### stop the server.
 
@@ -21,3 +22,15 @@
 #### list the collection in the db.
 
 `db.products.find().pretty()`
+
+#### to delete all the documents inside a collection.
+
+`db.products.deleteMany({})`
+
+#### to update multiple records.
+
+`db.products.updateMany({},{$set :{marker: "tobDeleted"}})`
+
+#### to update one document.
+
+`db.products.updateOne({distance: 12000},{$set :{marker: "tobDeleted"}})`
