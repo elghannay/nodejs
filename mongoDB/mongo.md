@@ -1,6 +1,6 @@
 ### basic ideas.
 
-> `a database holds multiple collections where each collection can then hold multiple documents.
+> a database holds multiple collections where each collection can then hold multiple documents.
 > a document cannot be inserted directly into a database, you need to use a collection.
 > use filters and operators like \$gt to limit the number of documents you retrieve.
 
@@ -43,14 +43,15 @@
 
 `db.products.updateOne({distance: 12000},{$set :{marker: "tobDeleted"}})`
 
-#### update vs updateMany
+#### update() vs updateMany()
 
-> update will overwrite the data inside the documents and replacing it with
+> update will overwrite the data inside the documents and replaces it with
 > the new passed object.
 > `db.products.update({distance: 12000},{marker: "toBeDeleted"})`
 
 > this will delete everything inside the document and replace it with marker: "toBeDeleted"
-> this can be unpredictable, so stick with updateOne and updateMany and use replace().
+
+> this can be unpredictable, so stick with updateOne() and updateMany() or use replace().
 
 #### insert many documents.
 
@@ -90,5 +91,5 @@
 
 `db.products.findOne({"status.details.responsible":"Max"}).pretty()`
 
-> the quotation mark is important around "status.details.responsible"
+> the quotation marks are important around "status.details.responsible"
 > `db.products.findOne({hobbies:"sports"}).pretty()`
