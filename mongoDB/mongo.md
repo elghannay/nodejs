@@ -65,7 +65,7 @@
 
 > find one will retrieve the first result.
 
-> `db.products.findOne({distance:{$gt:1000}}).pretty()`
+`db.products.findOne({distance:{$gt:1000}}).pretty()`
 
 #### find does not retrieve all the data in a collection so how can we do it?
 
