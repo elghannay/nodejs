@@ -47,7 +47,8 @@
 
 > update will overwrite the data inside the documents and replaces it with
 > the new passed object.
-> `db.products.update({distance: 12000},{marker: "toBeDeleted"})`
+> 
+`db.products.update({distance: 12000},{marker: "toBeDeleted"})`
 
 > this will delete everything inside the document and replace it with marker: "toBeDeleted"
 
@@ -92,4 +93,14 @@
 `db.products.findOne({"status.details.responsible":"Max"}).pretty()`
 
 > the quotation marks are important around "status.details.responsible"
-> `db.products.findOne({hobbies:"sports"}).pretty()`
+`db.products.findOne({hobbies:"sports"}).pretty()`
+
+#### drop a database.
+
+> delete the one that is in use.
+
+`db.dropDatabase()`
+
+#### drop a collection.
+
+`db.myCollectionName.drop()`
