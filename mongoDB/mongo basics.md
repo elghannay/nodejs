@@ -58,7 +58,7 @@
 
 `db.products.insertMany([{},{}])`
 
-> the data must be wrapped inside brackets.
+> the data must be wrapped inside brackets [].
 
 #### finding data with a greater condition.
 
