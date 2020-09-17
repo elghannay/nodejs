@@ -34,3 +34,25 @@
 > after installation copy mongoimport.exe from "C:\Program Files\MongoDB\Tools" into the bin folder "C:\Program Files\MongoDB\Server\4.4\bin"
 
 > navigate using your terminal to the folder where the json file you want to import is located then run your mongoimport command.
+
+#### using operators.
+
+> `$in` and `$nin` searches for values that are | not within the set(the range) of values that you have specified.
+
+`db.movies.find({duration: {$in:[25, 30]})`
+
+> the $or and $nor operator.
+
+`db.movies.find({$or: [{"rating.average": {$gt:25}}, {"rating.average": {$lt:22}}]).pretty()`
+
+> using the `$and` operator: you need an and operator if your query contain the same fields otherwise you don't need it.
+
+`db.movies.find({$and: [{"genre": 'Drama'}, {"genre": "horror"}]).pretty()`
+
+> but if expressed as below, it will return a wrong result.
+> since the last document will overwrite the first one thus return only the movies where the genre is 'horror'
+
+> `db.movies.find({"genre": 'Drama'}, {"genre": "horror"}).pretty()`
+
+> if the queries are different the `$and` is unnecessary: this will search for all the document that have a duration of 60 **and** a genre og horror.
+> `db.movies.find({"duration": '60'}, {"genre": "horror"}).pretty()`
