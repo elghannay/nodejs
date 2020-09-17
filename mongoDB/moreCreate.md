@@ -110,3 +110,28 @@ hobbies: [
 > to make sure that you get the exact match reformulate the query using **\$elemMatch**
 
 `db.users.find({hobbies :{$elemMatch: {title: "sports", frequency: {$gt: 3}}}}).pretty()`
+
+> using projection with \$elemMatch
+> filter for the movies that has a genre of drama and horror.
+
+`db.movies.find({genre: 'drama'},{genre: {$elemMatch:{$eq : 'horror'}}}).pretty()`
+
+#### using the cursor methods.
+
+> 1 sort ascending -1 descending.
+
+`db.users.find().sort({"rating.average": 1, runtime: -1}).pretty()`
+
+> what to do if you have pagination in your app? skip the previous 10 results.
+
+`db.users.find().sort({"rating.average": 1, runtime: -1}).skip(10).limit(10).pretty()`
+
+#### more no projection
+
+`db.movies.find({},{name: 1, _id: 0, "rating.average": 1}).pretty()`
+
+#### **\$slice**
+
+> return only the first two elements form the genre array.
+
+`db.movies.find({"average.rating": {$gt: 9}},{genre: {$slice: 2}, name: 1}).pretty()`
