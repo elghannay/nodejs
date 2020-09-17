@@ -73,4 +73,29 @@ db.runCommand({
 
 > the `findAndModify()` command modifies and returns a single document.
 
-#### add data to an array.
+#### add a document to an array.
+
+`db.users.updateOne({name: "maria"}, {$push: {hobbies: {title:"sports", frequency: 4}}})`
+
+> add multiple documents to an array sorted by frequency
+
+`db.users.updateMany({name: "maria"}, {$push: {hobbies: {$each: [{title:"sports", frequency: 4}, {title:"fishing", frequency: 1}], $sort:{frequency: -1}}}})`
+
+#### remove elements from an array.
+
+> use **\$pull**
+
+`db.users.updateOne({name: "maria"}, {$pull: {hobbies: {title:"sports", frequency: 4}}})`
+
+> to remove the last element from an array use **\$pop**
+> the value of '1' pop the first element and '-1' pop the last element.
+
+`db.users.updateOne({name: "maria"}, {$pop: {hobbies: 1}})`
+
+#### \$addToSet
+
+> add only unique data to your array and avoid inserting duplicates
+
+`db.users.updateOne({name: "maria"}, {$addToSet: {hobbies: {title:"sports", frequency: 4}}})`
+
+> the command will insert nothing if that document already exists in the array.
