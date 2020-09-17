@@ -52,7 +52,7 @@
 > but if expressed as below, it will return a wrong result.
 > since the last document will overwrite the first one thus return only the movies where the genre is 'horror'
 
-> `db.movies.find({"genre": 'Drama'}, {"genre": "horror"}).pretty()`
+`db.movies.find({"genre": 'Drama'}, {"genre": "horror"}).pretty()`
 
 > if the queries are different the `$and` is unnecessary: this will search for all the document that have a duration of 60 **and** a genre og horror.
 
@@ -68,10 +68,12 @@
 
 > using **regex** to search for text patterns is not performant.
 > for a word 'festival' in a summary
-> `db.movies.find({"summary": {&regex: /festival/ }}).pretty()`
+
+`db.movies.find({"summary": {&regex: /festival/ }}).pretty()`
 
 > search for a summary that has exactly one word 'festival'
-> `db.movies.find({"summary": 'festival').pretty()`
+
+`db.movies.find({"summary": 'festival').pretty()`
 
 #### querying arrays of embedded documents.
 
