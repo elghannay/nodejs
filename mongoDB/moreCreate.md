@@ -41,7 +41,7 @@
 
 `db.movies.find({duration: {$in:[25, 30]})`
 
-> the $or and $nor operator.
+> the **\$or** and \$nor operator.
 
 `db.movies.find({$or: [{"rating.average": {$gt:25}}, {"rating.average": {$lt:22}}]).pretty()`
 
@@ -55,4 +55,58 @@
 > `db.movies.find({"genre": 'Drama'}, {"genre": "horror"}).pretty()`
 
 > if the queries are different the `$and` is unnecessary: this will search for all the document that have a duration of 60 **and** a genre og horror.
-> `db.movies.find({"duration": '60'}, {"genre": "horror"}).pretty()`
+
+`db.movies.find({"duration": '60'}, {"genre": "horror"}).pretty()`
+
+> check for **existence** of a field.
+
+`db.users.find({age :{$exists: true, $ne: null}}).pretty()`
+
+> working with **types**.
+
+`db.users.find({phone :{$type: ["double", "string"]}}).pretty()`
+
+> using **regex** to search for text patterns is not performant.
+> for a word 'festival' in a summary
+> `db.movies.find({"summary": {&regex: /festival/ }}).pretty()`
+
+> search for a summary that has exactly one word 'festival'
+> `db.movies.find({"summary": 'festival').pretty()`
+
+#### querying arrays of embedded documents.
+
+> use the dot notation with "" as if you are working with
+> embedded documents
+
+#### using **\$size** and **\$all**
+
+> retrieve arrays that have exactly a certain size
+
+`db.users.find({hobbies :{$ize: 3}}).pretty()`
+
+> \$all omit the order see the docs for more details.
+
+#### using **\$elemMatch**
+
+> can be useful if **\$and** does not retrieve the exact element that satisfy both conditions.
+
+```json
+hobbies: [
+    {
+        title: "sports",
+        frequency: 3
+    },
+    {
+        title: "fishing",
+        frequency: 1
+    }
+];
+```
+
+> the query below will retrieve any user that has a title of sports and frequency of 3 even if the user does not exactly satisfy both condition.
+
+`db.users.find({$and :{'hobbies.title': 'sports'},{ 'hobbies.frequency': {$gte: 3}}}).pretty()`
+
+> to make sure that you get the exact match reformulate the query using **\$elemMatch**
+
+`db.users.find({hobbies :{$elemMatch: {title: "sports", frequency: {$gt: 3}}}}).pretty()`
