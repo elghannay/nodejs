@@ -90,7 +90,7 @@
 
 #### using **\$elemMatch**
 
-> can be useful if **\$and** does not retrieve the exact element that satisfy both conditions.
+> useful since **\$and** does not retrieve the exact **document** that satisfy both conditions.
 
 ```json
 hobbies: [
@@ -105,7 +105,7 @@ hobbies: [
 ];
 ```
 
-> the query below will retrieve any user that has a title of sports and frequency of 3 even if the user does not exactly satisfy both condition.
+> the query below will retrieve any user that has a hobby with title of sports and frequency of 3 even if they are not in the same document
 
 `db.users.find({$and :{'hobbies.title': 'sports'},{ 'hobbies.frequency': {$gte: 3}}}).pretty()`
 
@@ -126,7 +126,7 @@ hobbies: [
 
 > what to do if you have pagination in your app? skip the previous 10 results.
 
-`db.users.find().sort({"rating.average": 1, runtime: -1}).skip(10).limit(10).pretty()`
+**`db.users.find().sort({"rating.average": 1, runtime: -1}).skip(10).limit(10).pretty()`**
 
 #### more no projection
 
