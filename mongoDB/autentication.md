@@ -8,6 +8,10 @@
 
 > The first user created in the database should be a user administrator who has the privileges to manage other users. See Enable Access Control.
 
+When adding a user, you create the user in a specific database. This database is the authentication database for the user.
+
+A user can have privileges across different databases; that is, a user’s privileges are not limited to their authentication database. By assigning to the user roles in other databases, a user created in one database can have permissions to act on other databases. For more information on roles, see Role-Based Access Control.
+
 `sudo mongod --auth`
 
 > if you have already defined a user you may login to your db as `mongo -u name -p pass -authenticationDatabase admin` admin is the database that you have assigned the user initially.
