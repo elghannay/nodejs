@@ -10,7 +10,8 @@
 
 > if you have already defined a user you may login to your db as `mongo -u name -p pass -authenticationDatabase admin` admin is the database that you have assigned the user initially.
 
-> if it is your first time you get a local host exception, which the ability to switch to admin database even if you haven't added a new user.
+> if it is your first time you get a localhost exception, which the ability to switch to admin database even if you haven't added any user.
+
 > `use admin` > `db.createUser({ user: "mohamed",pwd: "elghannay", roles:["userAdminAnyDatabase"]})`
 > after you created the user make sure to authenticate.
 > `db.auth('mohamed','elghannay')` if the operation was successful `show dbs`
@@ -27,4 +28,4 @@
 `db.updateUser("appdev",{roles: ["readWrite",{role:"readWrite", db: "blog"}]})`
 
 > update privileges for the appdev user, give em access to the blog database.
-> to check the roles that user has `db.getUser("appdev")`
+> to check the roles that a user has `db.getUser("appdev")`
