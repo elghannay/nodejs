@@ -6,6 +6,8 @@
 
 #### creating and Editing users.
 
+> The first user created in the database should be a user administrator who has the privileges to manage other users. See Enable Access Control.
+
 `sudo mongod --auth`
 
 > if you have already defined a user you may login to your db as `mongo -u name -p pass -authenticationDatabase admin` admin is the database that you have assigned the user initially.
@@ -14,6 +16,7 @@
 
 > `use admin` > `db.createUser({ user: "mohamed",pwd: "elghannay", roles:["userAdminAnyDatabase"]})`
 > after you created the user make sure to authenticate.
+
 > `db.auth('mohamed','elghannay')` if the operation was successful `show dbs`
 
 > to switch the user you should logout or just quit the terminal.
@@ -29,3 +32,13 @@
 
 > update privileges for the appdev user, give em access to the blog database.
 > to check the roles that a user has `db.getUser("appdev")`
+
+> A user can have privileges across different databases. If a user requires privileges on multiple databases, create a single user with roles that grant applicable database privileges instead of creating the user multiple times in different databases.
+
+#### Limit Network Exposure 
+
+> Allow only trusted clients to access the network interfaces and ports on which MongoDB instances are available. For instance, use IP whitelisting to allow access from trusted IP addresses (see )
+
+#### authentication vs authorization
+
+> Although authentication and authorization are closely connected, authentication is distinct from authorization. Authentication verifies the identity of a user; authorization determines the verified user’s access to resources and operations.
