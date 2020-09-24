@@ -26,6 +26,8 @@ A user can have privileges across different databases; that is, a user’s privi
 > to switch the user you should logout or just quit the terminal.
 > make sure to switch first to the database that the user can have access to.(then create the user)
 
+The localhost exception applies only when there are no users created in the MongoDB instance.
+
 #### assigning more that one db to a user.
 
 > one confusing thing that you should note though, always select first the db that a user has access to then try to authenticate.
@@ -46,3 +48,23 @@ A user can have privileges across different databases; that is, a user’s privi
 #### authentication vs authorization
 
 > Although authentication and authorization are closely connected, authentication is distinct from authorization. Authentication verifies the identity of a user; authorization determines the verified user’s access to resources and operations.
+
+#### roles 
+
+As you already know, a role is a privilege granted to a user for making actions over resources.
+The role defines the tasks that the role member is allowed to do and the resources where those tasks can be done.
+
+Several roles provide either indirect or direct system-wide superuser access.
+
+The following roles provide the ability to assign any user any privilege on any database, which means that users with one of these roles can assign themselves any privilege on any database:
+
+* dbOwner role, when scoped to the admin database
+* userAdmin role, when scoped to the admin database
+* userAdminAnyDatabase role
+
+* The following role provides full privileges on all resources: **root**
+
+to get all the roles of a database, use
+
+> `db.system.roles.find()` or `> db.getRoles()`
+
