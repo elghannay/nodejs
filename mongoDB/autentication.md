@@ -14,7 +14,7 @@ A user can have privileges across different databases; that is, a user’s privi
 
 `sudo mongod --auth`
 
-> if you have already defined a user you may login to your db as `mongo -u name -p pass -authenticationDatabase admin` admin is the database that you have assigned the user initially.
+> if you have already defined a user you may login to your db as `mongo -u name -p pass -authenticationDatabase admin` admin is the database that you have assigned the user initially. it could be the 'shop' DB for example.
 
 > if it is your first time you get a localhost exception, which the ability to switch to admin database even if you haven't added any user.
 
@@ -68,3 +68,22 @@ to get all the roles of a database, use
 
 > `db.system.roles.find()` or `> db.getRoles()`
 
+#### TLS SSL
+
+To use TLS/SSL with MongoDB , you must have the TLS/SSL certificates as PEM files, which are concatenated certificate containers. Clients must have support for TLS/SSL to connect to a mongod or a mongos instance that require TLS/SSL connections.
+
+TLS is upgraded version of SSL.
+SSL and TLS are cryptographic protocols that authenticate data transfer between servers, systems, applications and users. For example, a cryptographic protocol encrypts the data that is exchanged between a web server and a user.
+
+If you look at SSL versus TLS certificate, both perform the same task of encrypting data exchange. TLS was an update and secure version of SSL.
+
+to generate one :
+> [stackoverflow link](https://stackoverflow.com/questions/10175812how-to-create-a-self-signed-certificate-with-openssl)  
+
+> download and install from this [link](https://slproweb.com/products/Win32OpenSSL.html)
+
+after navigation to the bin folder of openSSL type the command found on stack overflow 
+
+> make sure to choose carefully the Common Name, it's the host that the encryption will be active on.
+
+NOTE: using a self generated certificates in not recommended you have to buy it from an online authorized vendor and verify your connections to their server.
