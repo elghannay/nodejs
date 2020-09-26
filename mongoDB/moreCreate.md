@@ -75,6 +75,18 @@
 
 `db.movies.find({"summary": 'festival').pretty()`
 
+> return documents in the bios collection where the array size of contribs is 4:
+
+> returns documents in the bios collection where the array field contribs contains the element "ALGOL" **or** "Lisp":
+
+`db.bios.find( { contribs: { $in: [ "ALGOL", "Lisp" ]} } )`
+
+> returns documents in the bios collection where the array field contribs contains the element "ALGOL" **and** "Lisp" without taking into consideration the existence of other elements nor the order 
+
+`db.bios.find( { contribs: { $all: [ "ALGOL", "Lisp" ] } } )`
+
+`db.bios.find( { contribs: { $size: 4 } } )`
+
 #### querying arrays of embedded documents.
 
 > use the dot notation with "" as if you are working with
@@ -118,6 +130,15 @@ hobbies: [
 
 `db.movies.find({genre: 'drama'},{genre: {$elemMatch:{$eq : 'horror'}}}).pretty()`
 
+
+The following example queries for documents where the dim_cm array contains elements that in some combination satisfy the query conditions; e.g., one element can satisfy the greater than 15 condition and another element can satisfy the less than 20 condition, or a single element can satisfy both:
+
+`db.inventory.find( { dim_cm: { $gt: 15, $lt: 20 } } )`
+
+The following example queries for documents where the dim_cm array contains at least one element that is both greater than ($gt) 22 and less than ($lt) 30:
+
+`db.inventory.find( { dim_cm: { $elemMatch: { $gt: 22, $lt: 30 } } } )`
+
 #### using the cursor methods.
 
 > 1 sort ascending -1 descending.
@@ -128,9 +149,14 @@ hobbies: [
 
 **`db.users.find().sort({"rating.average": 1, runtime: -1}).skip(10).limit(10).pretty()`**
 
-#### more no projection
+#### more on projection
 
 `db.movies.find({},{name: 1, _id: 0, "rating.average": 1}).pretty()`
+
+`db.bios.find( { }, { name: 1, contribs: 1 } )`
+
+NOTE
+> Unless the _id field is explicitly excluded in the projection document _id: 0, the _id field is returned.
 
 #### **\$slice**
 
