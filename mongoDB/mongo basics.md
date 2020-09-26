@@ -63,9 +63,12 @@
 #### finding data with a greater condition.
 
 `db.products.find({distance:{$gt:1000}}).pretty()`
+
 `db.bios.find( { birth: { $gt: new Date('1940-01-01'), $lt: new Date('1960-01-01') } } )`
-> death field does not exists:
+> returns all the documents from the bios collection where birth field is greater than new Date('1950-01-01') **and** death field does not exists:
+
 `db.bios.find( {birth: { $gt: new Date('1920-01-01') },death: { $exists: false }} )`
+
 > find one will retrieve the first result.
 
 `db.products.findOne({distance:{$gt:1000}}).pretty()`
