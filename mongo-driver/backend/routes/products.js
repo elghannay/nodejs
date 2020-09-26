@@ -1,6 +1,9 @@
 const Router = require('express').Router;
 
 const router = Router();
+const mongo = require('mongodb');
+const MongoClient = require('mongodb').MongoClient;
+const decimal128 = require('mongodb').Decimal128.fromString;
 
 const products = [
   {
@@ -9,7 +12,7 @@ const products = [
     description:
       'A stylish backpack for the modern women or men. It easily fits all your stuff.',
     price: 79.99,
-    image: 'http://localhost:3100/images/product-backpack.jpg'
+    image: 'http://localhost:3100/images/product-backpack.jpg',
   },
   {
     _id: 'asdgfs1',
@@ -17,7 +20,7 @@ const products = [
     description:
       "How could a man resist these lovely earrings? Right - he couldn't.",
     price: 129.59,
-    image: 'http://localhost:3100/images/product-earrings.jpg'
+    image: 'http://localhost:3100/images/product-earrings.jpg',
   },
   {
     _id: 'askjll13',
@@ -25,14 +28,14 @@ const products = [
     description:
       'Yes, you got that right - this MacBook has the old, working keyboard. Time to get it!',
     price: 1799,
-    image: 'http://localhost:3100/images/product-macbook.jpg'
+    image: 'http://localhost:3100/images/product-macbook.jpg',
   },
   {
     _id: 'sfhjk1lj21',
     name: 'Red Purse',
     description: 'A red purse. What is special about? It is red!',
     price: 159.89,
-    image: 'http://localhost:3100/images/product-purse.jpg'
+    image: 'http://localhost:3100/images/product-purse.jpg',
   },
   {
     _id: 'lkljlkk11',
@@ -40,36 +43,63 @@ const products = [
     description:
       'Never be naked again! This T-Shirt can soon be yours. If you find that buy button.',
     price: 39.99,
-    image: 'http://localhost:3100/images/product-shirt.jpg'
+    image: 'http://localhost:3100/images/product-shirt.jpg',
   },
   {
     _id: 'sajlfjal11',
     name: 'Cheap Watch',
     description: 'It actually is not cheap. But a watch!',
     price: 299.99,
-    image: 'http://localhost:3100/images/product-watch.jpg'
-  }
+    image: 'http://localhost:3100/images/product-watch.jpg',
+  },
 ];
 
 // Get list of products products
 router.get('/', (req, res, next) => {
   // Return a list of dummy products
   // Later, this data will be fetched from MongoDB
-  const queryPage = req.query.page;
-  const pageSize = 5;
-  let resultProducts = [...products];
-  if (queryPage) {
-    resultProducts = products.slice(
-      (queryPage - 1) * pageSize,
-      queryPage * pageSize
-    );
-  }
-  res.json(resultProducts);
+  // const queryPage = req.query.page;
+  // const pageSize = 5;
+  // let resultProducts = [...products];
+  // if (queryPage) {
+  //   resultProducts = products.slice(
+  //     (queryPage - 1) * pageSize,
+  //     queryPage * pageSize
+  //   );
+  // }
+  const products = [];
+  MongoClient.connect(
+    'mongodb+srv://elghannay:0666565422@cluster0.hqtdu.azure.mongodb.net/shop?retryWrites=true&w=majority'
+  )
+    .then((client) =>
+      client
+        .db()
+        .collection('products')
+        .find()
+        .forEach((resultDoc) => {
+          resultDoc.price = resultDoc.price.toString();
+          products.push(resultDoc);
+        })
+        .then((result) => {
+          console.log(result);
+          client.close();
+          res.status(201).json(products);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ message: 'an error occured' });
+        })
+    )
+    .catch((err) => {
+      console.log(err);
+      client.close();
+      res.status(500).json({ message: 'an error occured' });
+    });
 });
 
 // Get single product
 router.get('/:id', (req, res, next) => {
-  const product = products.find(p => p._id === req.params.id);
+  const product = products.find((p) => p._id === req.params.id);
   res.json(product);
 });
 
@@ -79,11 +109,35 @@ router.post('', (req, res, next) => {
   const newProduct = {
     name: req.body.name,
     description: req.body.description,
-    price: parseFloat(req.body.price), // store this as 128bit decimal in MongoDB
-    image: req.body.image
+    price: decimal128(req.body.price.toString()), // store this as 128bit decimal in MongoDB
+    image: req.body.image,
   };
+  MongoClient.connect(
+    'mongodb+srv://elghannay:0666565422@cluster0.hqtdu.azure.mongodb.net/shop?retryWrites=true&w=majority'
+  )
+    .then((client) =>
+      client
+        .db()
+        .collection('products')
+        .insertOne(newProduct)
+        .then((result) => {
+          console.log(result);
+          client.close();
+          res.status(201).json({
+            message: 'Product added',
+            productId: result.insertedId,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ message: 'an error occured' });
+        })
+    )
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: 'an error occured' });
+    });
   console.log(newProduct);
-  res.status(201).json({ message: 'Product added', productId: 'DUMMY' });
 });
 
 // Edit existing product
@@ -93,7 +147,7 @@ router.patch('/:id', (req, res, next) => {
     name: req.body.name,
     description: req.body.description,
     price: parseFloat(req.body.price), // store this as 128bit decimal in MongoDB
-    image: req.body.image
+    image: req.body.image,
   };
   console.log(updatedProduct);
   res.status(200).json({ message: 'Product updated', productId: 'DUMMY' });
