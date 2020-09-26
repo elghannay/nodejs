@@ -99,3 +99,28 @@ db.runCommand({
 `db.users.updateOne({name: "maria"}, {$addToSet: {hobbies: {title:"sports", frequency: 4}}})`
 
 > the command will insert nothing if that document already exists in the array.
+
+#### the set operator.
+
+The `$set` stage is an alias for `$addFields`.
+
+$set appends new fields to existing documents. You can include one or more $set stages in an aggregation operation.
+
+[visit the docs](https://docs.mongodb.com/manual/reference/operator/aggregation/set/#pipe._S_set)
+
+```js
+db.scores.aggregate( [
+   {
+     $set: {
+        totalHomework: { $sum: "$homework" },
+        totalQuiz: { $sum: "$quiz" }
+     }
+   },
+   {
+     $set: {
+        totalScore: { $add: [ "$totalHomework", "$totalQuiz", "$extraCredit" ] } }
+   }
+] )
+```
+
+If the field does not exist, `$set` will add a new field with the specified value
