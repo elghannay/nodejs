@@ -52,22 +52,7 @@
 
 #### **arrayFilters** determines which array elements to update.
 
-```json
-db.students.insert([
-  { "_id": 1, "grades": [95, 92, 90] },
-  { "_id": 2, "grades": [98, 100, 102] },
-  { "_id": 3, "grades": [95, 110, 100] }
-])
-```
-
-```js
-db.runCommand({
-  findAndModify: 'students',
-  query: { grades: { $gte: 100 } },
-  update: { $set: { 'grades.$[element]': 100 } },
-  arrayFilters: [{ element: { $gte: 100 } }],
-});
-```
+[more info can be found here](https://docs.mongodb.com/manual/reference/method/db.collection.updateMany/#examples)
 
 > the filter by which you update documents and the filter by which you identify array elements you want to update does not have to be the same.
 
@@ -124,3 +109,59 @@ db.scores.aggregate( [
 ```
 
 If the field does not exist, `$set` will add a new field with the specified value
+
+#### Example:
+
+```js
+db.members.updateMany(
+   { },
+   [
+      { $set: { status: "Modified", comments: [ "$misc1", "$misc2" ], lastUpdate: "$$NOW" } },
+      { $unset: [ "misc1", "misc2" ] }
+   ]
+)
+```
+The $set stage:
+
+* creates a new array field comments whose elements are the current content of the misc1 and misc2 fields and
+* sets the field lastUpdate to the value of the aggregation variable NOW. The aggregation variable NOW resolves to the current datetime value and remains the same throughout the pipeline.
+
+To access **aggregation variables**, prefix the variable with double dollar signs **$$** and enclose in quotes.
+
+Second Stage
+The $unset stage removes the misc1 and misc2 fields.
+
+#### Use $each with $addToSet Operator
+
+The $each modifier is available for use with the $addToSet operator and the $push operator.
+
+Use with the $addToSet operator to add multiple values to an array <field> if the values do not exist in the <field>.
+
+`{ $addToSet: { <field>: { $each: [ <value1>, <value2> ... ] } } }`
+
+Use with the $push operator to append multiple values to an array <field>.
+
+`{ $push: { <field>: { $each: [ <value1>, <value2> ... ] } } }`
+
+A collection inventory has the following document:
+
+`{ _id: 2, item: "cable", tags: [ "electronics", "supplies" ] }`
+
+Then the following operation uses the $addToSet operator with the $each modifier to add multiple elements to the tags array:
+
+```js
+db.inventory.update(
+   { _id: 2 },
+   { $addToSet: { tags: { $each: [ "camera", "electronics", "accessories" ] } } }
+ )
+ ```
+
+the resulted array. use each with addToSet whenever possible since it delete duplicates
+
+```js
+ {
+  _id: 2,
+  item: "cable",
+  tags: [ "electronics", "supplies", "camera", "accessories" ]
+}
+```
