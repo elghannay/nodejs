@@ -123,7 +123,7 @@ db.members.updateMany(
 ```
 The $set stage:
 
-* creates a new array field comments whose elements are the current content of the misc1 and misc2 fields and
+* creates a new array field comment whose elements are the current content of the misc1 and misc2 fields and
 * sets the field lastUpdate to the value of the aggregation variable NOW. The aggregation variable NOW resolves to the current datetime value and remains the same throughout the pipeline.
 
 To access **aggregation variables**, prefix the variable with double dollar signs **$$** and enclose in quotes.
