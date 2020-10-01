@@ -173,6 +173,10 @@ when checking for null values, the query will return the documents that contains
 
 `db.movieDetails.find({"movie.tomato": null}).pretty()`
 
-check for existence of a field :
+check for existence of a field:
 
 `{atmosphericPressureChange:{$exists:false}}`
+
+but the best workaround is this expression:
+
+`db.movies.find({$and: [{"genre": {$ne: null}}, {"genre": {$exists: true}]).pretty()`

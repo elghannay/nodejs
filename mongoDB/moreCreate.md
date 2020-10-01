@@ -45,7 +45,12 @@
 
 `db.movies.find({$or: [{"rating.average": {$gt:25}}, {"rating.average": {$lt:22}}]).pretty()`
 
-> using the `$and` operator: you need an and operator if your query contain the same fields otherwise you don't need it.
+> using the `$and` operator: you need an and operator if your query contain the same fields otherwise you don't need it. by default ON find method the queries are combined with an AND.
+
+> the `$and` operator allow to add constrains to the same field.
+
+`db.movies.find({$and: [{"genre": {$ne: null}}, {"genre": {$exists: true}]).pretty()`
+
 
 `db.movies.find({$and: [{"genre": 'Drama'}, {"genre": "horror"}]).pretty()`
 
