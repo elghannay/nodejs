@@ -165,3 +165,14 @@ the resulted array. use each with addToSet whenever possible since it delete dup
   tags: [ "electronics", "supplies", "camera", "accessories" ]
 }
 ```
+
+
+#### working with null fields.
+
+when checking for null values, the query will return the documents that contains the null value ALSO the documents that does not contain at all the key that you are looking for.
+
+`db.movieDetails.find({"movie.tomato": null}).pretty()`
+
+check for existence of a field :
+
+`{atmosphericPressureChange:{$exists:false}}`
