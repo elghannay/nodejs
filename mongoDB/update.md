@@ -37,6 +37,8 @@
 > updating arrays can be a little bit complex so first select the data that you want to target using the find() method then
 > update it.
 
+> select document in the array if element in the array field matches all the specified $elematch conditions.
+
 `db.users.find({hobbies: {$elemMatch: {title: "sports", frequency: {$gt: 3}}}})`
 
 > then update it, notice the use of **\$**, it select the current element returned **from** **the first document** (the filter). only refers to the first match.
