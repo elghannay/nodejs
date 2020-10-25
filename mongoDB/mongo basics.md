@@ -17,6 +17,10 @@
 
 `show dbs`
 
+#### show collections
+
+`show collections`
+
 #### switching to a new database.
 
 `use shop`
@@ -47,8 +51,8 @@
 
 > update will overwrite the data inside the documents and replaces it with
 > the new passed object.
-> 
-`db.products.update({distance: 12000},{marker: "toBeDeleted"})`
+>
+> `db.products.update({distance: 12000},{marker: "toBeDeleted"})`
 
 > this will delete everything inside the document and replace it with marker: "toBeDeleted"
 
@@ -65,6 +69,7 @@
 `db.products.find({distance:{$gt:1000}}).pretty()`
 
 `db.bios.find( { birth: { $gt: new Date('1940-01-01'), $lt: new Date('1960-01-01') } } )`
+
 > returns all the documents from the bios collection where birth field is greater than new Date('1950-01-01') **and** death field does not exists:
 
 `db.bios.find( {birth: { $gt: new Date('1920-01-01') },death: { $exists: false }} )`
@@ -98,7 +103,7 @@
 `db.products.findOne({"status.details.responsible":"Max"}).pretty()`
 
 > the quotation marks are important around "status.details.responsible"
-`db.products.findOne({hobbies:"sports"}).pretty()`
+> `db.products.findOne({hobbies:"sports"}).pretty()`
 
 #### drop a database.
 
@@ -109,4 +114,3 @@
 #### drop a collection.
 
 `db.myCollectionName.drop()`
-
