@@ -2,6 +2,36 @@
 
 > you may have an online shop, so from a data modeling perspective you will prioritize efficiency of data retrieval for your customer and you may have a data scientist that also to work with that data but maybe not in that format, so aggregation framework gives you the ability to format your data based on your needs.
 
+pipelines are an array of one or more stages or composition of stages, stages are composed of one or more operator or expression that are configured to return the desired transformation, flow like in an **assembly line**.
+
+> there are query operators and aggregation operators, as a general rule operators always appear at the key position of a document.
+
+> expressions act like functions we provide arguments and they provide computed output , they always appear at the value position of a document => {operator : expression}
+
+```
+$ :field path like $filedName
+$$UPPERCASE : system variable like $$UPPERCASE
+$$foo user created Variable
+
+```
+
+#### match
+
+match is more of a filter than a find, use it as an early stage as possible for optimization reasons in fact it is required by certain operators to be the fist.
+
+```js
+var pipe = [
+  {
+    $match: {
+      'imdb.rating': { $gte: 7 },
+      genres: { $nin: ['Crime', 'Horror'] },
+      rated: { $in: ['PG', 'G'] },
+      languages: { $all: ['English', 'Japanese'] },
+    },
+  },
+];
+```
+
 #### \$group
 
 > sum the population of a state.
