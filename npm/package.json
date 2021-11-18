@@ -1,0 +1,11 @@
+{
+  "name": "npm-training",
+  "version": "1.0.0",
+  "description": "a learning ressource for nmp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "elghannay",
+  "license": "ISC"
+}
